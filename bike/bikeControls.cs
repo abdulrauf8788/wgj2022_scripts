@@ -10,6 +10,8 @@ public class bikeControls : MonoBehaviour
     public float leftRightMaxConstraint = 30f;
     public float tiltAngle= 45; 
     public float movementAngle= 20; 
+    public float xMinMax = 5f;
+
 
     void Start()
     {
@@ -21,8 +23,8 @@ public class bikeControls : MonoBehaviour
         float xAxis = Input.GetAxis("Horizontal");
         Quaternion targetRotation = Quaternion.Euler(xAxis * tiltAngle, xAxis * movementAngle, 0);
         Vector3 targetPosition = transform.position + Vector3.forward * xAxis * dragSpeed;
-        
         transform.position = Vector3.Lerp(transform.position, targetPosition, DragSmoothness * Time.deltaTime);
+        transform.position = new Vector3(transform.position.x, transform.position.y, Mathf.Clamp(transform.position.z, -xMinMax, xMinMax));
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, tiltSmoothness * Time.deltaTime);
     }
 }
